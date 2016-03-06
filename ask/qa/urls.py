@@ -28,10 +28,10 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.test, name='index'),
-    url(r'^login', views.not_found, name='not_found'),
-    url(r'^signup', views.not_found, name='not_found'),
+    url(r'^login', views.test, name='login'),
+    url(r'^signup', views.test, name='signup'),
     url(r'^question/(?P<question_id>[0-9]+)/$', views.question_details, name='question_details'),
-    url(r'^ask', views.not_found, name='not_found'),
+    url(r'^ask', views.test, name='ask'),
     url(r'^popular', views.not_found, name='not_found'),
-    url(r'^new', views.not_found, name='not_found'),
+    url(r'^new', views.test, name='new'),
 ]
