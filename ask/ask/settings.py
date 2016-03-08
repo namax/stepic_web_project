@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'qa'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -71,11 +72,16 @@ WSGI_APPLICATION = 'ask.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
+# CREATE DATABASE `stepic_django` /*!40100 COLLATE 'utf8_general_ci' */;
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'stepic_django',
+        'USER': 'root',
+        'PASSWORD': '1',
+        'HOST': '192.168.30.105',  # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
+
     }
 }
 
