@@ -6,7 +6,7 @@
     <div class="row">
         <ul>
             {% for question in questions %}
-                <li><a href="/{% url 'question_details' question.id %}">{{ question.title }}</a></li>
+                <li><a href="{% url 'question_details' question.id %}">{{ question.title }}</a></li>
             {% endfor %}
         </ul>
     </div>
