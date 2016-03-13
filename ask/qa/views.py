@@ -24,7 +24,7 @@ def question_details(request, question_id):
 
 def popular_questions_list(request):
     limit = 10
-    questions = Question.objects.order_by("rating")
+    questions = Question.objects.order_by("-rating")
     try:
         page_number = request.GET.get('page', 1)
     except ValueError:
