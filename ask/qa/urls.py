@@ -27,11 +27,11 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.test, name='index'),
+    url(r'^$', views.last_questions_list, name='last_questions_list'),
     url(r'^login', views.test, name='login'),
     url(r'^signup', views.test, name='signup'),
     url(r'^question/(?P<question_id>[0-9]+)/$', views.question_details, name='question_details'),
     url(r'^ask', views.test, name='ask'),
-    url(r'^popular', views.not_found, name='not_found'),
+    url(r'^popular', views.popular_questions_list, name='popular_questions_list'),
     url(r'^new', views.test, name='new'),
 ]
