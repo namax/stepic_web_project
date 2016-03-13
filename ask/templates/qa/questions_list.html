@@ -1,0 +1,17 @@
+{% extends "layouts/public.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <ul>
+            {% for question in questions %}
+                <li><a href="/{% url 'question_details' question.id %}">{{ question.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% include "common/pagination.html" %}
+
+{% endblock %}
+

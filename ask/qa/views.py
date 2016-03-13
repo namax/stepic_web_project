@@ -20,7 +20,19 @@ def question_details(request, question_id):
 
 
 def popular_questions_list(request):
-    return HttpResponse('popular_questions_list')
+    limit = 10
+    questions = Question.objects.order_by("rating");
+    pageNumber = request.GET.get('page', 1);
+    paginator = Paginator(questions, limit)
+    paginator.baseurl = "/?page="
+    page = paginator.page(pageNumber)
+
+    return render(request, 'qa/questions_list.html', {
+        "questions": page.object_list,
+        "paginator": paginator,
+        "page": page,
+        "title": "Last questions"
+    })
 
 
 def last_questions_list(request):
@@ -28,10 +40,10 @@ def last_questions_list(request):
     questions = Question.objects.order_by("-id");
     pageNumber = request.GET.get('page', 1);
     paginator = Paginator(questions, limit)
-    paginator.baseurl = "/?page="
+    paginator.baseurl = "/popular/?page="
     page = paginator.page(pageNumber)
 
-    return render(request, 'qa/last_question_list.html', {
+    return render(request, 'qa/questions_list.html', {
         "questions": page.object_list,
         "paginator": paginator,
         "page": page,
