@@ -6,28 +6,13 @@
     <div class="row">
         {{ question.title }}
     </div>
-    <div class="row">
-        <ul>
-            {% for answer in answers %}
-                <li>{{ answer.text }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-
 
     {% for e in form.non_field_errors %}
         <div class="alert alert-danger">{{ e }}</div>
     {% endfor %}
+    <form method="post" action="{% url 'ask' %}">
 
-    <form method="post" action="{% url 'save_answer' %}">
-
-
-        {% for hidden in form.hidden_fields %}
-            {{ hidden }}
-        {% endfor %}
-
-
-        {% for field in form.visible_fields %}
+        {% for field in form %}
             {% if field.errors %}
                 <div class="alert alert-danger">{{ field.errors }}</div>
             {% endif %}
