@@ -23,13 +23,13 @@ Including another URLconf
 /new/
 """
 from django.conf.urls import url
-
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
     url(r'^$', views.last_questions_list, name='last_questions_list'),
-    url(r'^login', views.test, name='login'),
-    url(r'^signup', views.test, name='signup'),
+    url(r'^login', auth_views.login, {'extra_context': {'next': '/'}}, name='login'),
+    url(r'^signup', views.signup, name='signup'),
     url(r'^question/(?P<question_id>[0-9]+)/$', views.question_details, name='question_details'),
     url(r'^ask', views.question_add, name='ask'),
     url(r'^popular', views.popular_questions_list, name='popular_questions_list'),

@@ -1,9 +1,11 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
 from django.core.paginator import Paginator, EmptyPage
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 from qa.models import Question, Answer
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from qa.forms import AnswerForm, AskForm
+from qa.forms import AnswerForm, AskForm, SignupForm
 
 
 def test(request, *args, **kwargs):
@@ -73,8 +75,13 @@ def last_questions_list(request):
 
 
 def question_add(request):
+    user = request.user
+    if user.is_anonymous():
+        return HttpResponseRedirect(reverse('login'))
+
     if request.method == 'POST':
         form = AskForm(request.POST)
+        form.user = user
         if form.is_valid():
             question = form.save()
 
@@ -88,14 +95,27 @@ def question_add(request):
 
 
 def save_answer(request):
-    if request.method == 'POST':
+    user = request.user
+    if request.method == 'POST' and user.is_authenticated():
         form = AnswerForm(request.POST)
+        form.user = user
         if form.is_valid():
             answer = form.save()
             return HttpResponseRedirect(reverse('question_details', kwargs={'question_id': answer.question.id}))
-    else:
-        return HttpResponseRedirect(reverse('last_questions_list'))
 
-    return render(request, 'qa/questions_list.html', {
+    return HttpResponseRedirect(reverse('login'))
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return HttpResponseRedirect(reverse('last_questions_list'))
+    else:
+        form = SignupForm()
+
+    return render(request, 'registration/signup.html', {
         "form": form
     })
