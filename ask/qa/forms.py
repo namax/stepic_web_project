@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import password_validation
 from django.contrib.auth.models import User
 
 from qa.models import Question, Answer
@@ -38,7 +39,22 @@ class AnswerForm(forms.Form):
         return answer
 
 
-class SignupForm(UserCreationForm):
+class SignupForm(forms.ModelForm):
+    password = forms.CharField(label="Password", widget=forms.PasswordInput)
+
+    def clean_password(self):
+        password_get = self.cleaned_data.get("password")
+        self.instance.username = self.cleaned_data.get('username')
+        password_validation.validate_password(password_get, self.instance)
+        return password_get
+
+    def save(self, commit=True):
+        user = super(SignupForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user
+
     class Meta:
         model = User
         fields = ("username", "email")

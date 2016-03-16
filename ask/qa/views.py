@@ -109,9 +109,13 @@ def save_answer(request):
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         if form.is_valid():
-            user = form.save()
-            login(request, user)
+            user_new = form.save()
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
             return HttpResponseRedirect(reverse('last_questions_list'))
     else:
         form = SignupForm()
