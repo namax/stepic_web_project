@@ -6,6 +6,9 @@ from django.shortcuts import render, get_object_or_404
 from qa.models import Question, Answer
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from qa.forms import AnswerForm, AskForm, SignupForm
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def test(request, *args, **kwargs):
@@ -107,6 +110,7 @@ def save_answer(request):
 
 
 def signup(request):
+    logger.error(request.body)
     if request.method == 'POST':
         form = SignupForm(request.POST)
         username = request.POST.get('username')
@@ -116,7 +120,7 @@ def signup(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-            return HttpResponseRedirect(reverse('last_questions_list'))
+                # return HttpResponseRedirect(reverse('last_questions_list'))
     else:
         form = SignupForm()
 
